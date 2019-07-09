@@ -5,7 +5,7 @@ import webbrowser
 from pprint import pprint as pp # part of the standard library
 
 ## Define APOD
-APODURL = 'https://api.nasa.gov/planetary/apod?'
+NASAAPI = 'https://api.nasa.gov/planetary/apod?'
 MKEY = 'api_key=1qgDvRdvdDb0AW6wZiQ6lATNTsGfz4WPOZwwohyR'
 
 ## Call the webservice
