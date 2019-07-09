@@ -41,6 +41,6 @@ def main():
 
     ## use firefox to open the HTTPS URL
     input('\nPress Enter to open NASA Picture of the Day in Firefox')
-    webbrowser.open(decodeapod['url'])
+    webbrowser.open(convertedjson['url'])
 
 main()
