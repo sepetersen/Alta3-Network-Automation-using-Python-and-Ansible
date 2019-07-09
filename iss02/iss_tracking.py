@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import time
 import turtle
 import urllib.request
 import json
@@ -43,6 +44,30 @@ lon = round(float(lon))
 lat = round(float(lat))
 iss.penup()
 iss.goto(lon, lat)
+
+## My location
+yellowlat = 39.0
+yellowlon = -77.0
+mylocation = turtle.Turtle()
+mylocation.penup()
+mylocation.color('yellow')
+mylocation.goto(yellowlon, yellowlat)
+mylocation.dot(5)
+mylocation.hideturtle()
+
+passiss = 'http://api.open-notify.org/iss-pass.json'
+passiss = passiss + '?lat=' + str(yellowlat) + '&lon=' + str(yellowlon)
+response = urllib.request.urlopen(passiss)
+result = json.loads(response.read().decode('utf-8'))
+
+## print (result) ## uncomment to see the downloaded result
+
+over = result['response'][1]['risetime']
+
+style = ('Arial', 6, 'bold')
+mylocation.write(time.ctime(over), font=style)
+
+
 
 # Must be last line of code
 turtle.mainloop()
