@@ -1,0 +1,37 @@
+---
+- name: Network Agnostic Playbook
+  hosts: ~^arista
+  gather_facts: no
+
+  vars:
+          dnsserver: "8.8.8.8"
+
+  tasks:
+          - name: CONFIGURE DNS
+            cli_config:
+                    config: ip name-server {{ dnsserver }} 
+
+          - name: CHECK CONFIGURATION
+            cli_command:
+                    command: show run | i ip name-server
+            register: results
+
+            # turning off our debug statement
+            # we no longer need this step as we now know what we're looking for
+          - name: PRINT OUTPUT TO SCREEN
+            debug:
+                    var: results.stdout
+            tags:
+                    - never
+                    - showresults
+
+            # Lets create a new variable based on some dynamic data
+            # If our command worked, we know it should respond ip name-server vrf defalt www.xxx.yy.zz
+            # where www.xxx.yyy.zz should be the IP address passed to our playbook for dnsserver
+          - set_fact:
+                  expected_output: ip name-server vrf default {{ dnsserver }}
+
+            # now perform our post-check.  We want the playbook to FAIL if we didn't get our expected output
+          - fail:
+                  msg: failing
+            when: expected_output not in results.stdout
