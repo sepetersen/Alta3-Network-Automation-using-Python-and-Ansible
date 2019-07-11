@@ -1,0 +1,61 @@
+---
+- name: A Play to play with python
+  hosts: localhost
+
+  vars:
+          test_list:
+            - '192.168.2.1'
+            - '10.10.0.2'
+            - 'host.example.org'
+            - '192.168.70.0/24'
+            - 'fe80::100/10'
+            - 'True'
+            - 'Witcher3 The Wild Hunt'
+            - 'Earl Grey Tea, hot'
+          mytest_string: "ncc1701 uss enterprise"
+          myaddresses: ['192.168.2.101', '10.0.3.50', '171.172.32.1']
+
+  tasks:
+  # Use the jinja ipaddr filter to reveal JUST IPs from a mixed list
+  - name: Just want the IPs
+    debug:
+            msg: "{{ test_list | ipaddr }}"
+
+  # Use the jinja random_mac filter to finish a MAC address
+  - name: spawn random mac
+    debug:
+            msg: "{{ '52:54:00' | random_mac }}"
+
+  # When using the var statement, Ansible would prefer you did NOT use mustache brackets
+  - name: some dont req mustache brackets
+    debug:
+            var: "'52:54:11' | random_mac"
+  # FYI - The no mustache brackets rule also applies to when statements
+  # when: never use {{   }} in when statements
+  
+  # Here is an example of using a python METHOD to parse our data
+  # This method returns a bool (true / false)
+  - name: Test if our string ends in prise
+    debug:
+            msg: "{{ mytest_string.endswith('prise') }}"
+
+  # building a conditional around our task
+  # this will only print if our string ends in prise
+  - name: This only prints when this tests true using python
+    debug:
+            msg: "Ahh but is it the Enterprise subclass A, B, C, or D?"
+    when: mytest_string.endswith('prise')
+
+  # Sometimes a jinja filter seems like more work to learn than jus using a Python method
+  - name: Jina2 way of capitalizing a string
+    debug:
+            msg: "{{ mytest_string | capitalize }}"
+
+  # Sometimes we need to use Python and Jinja
+  # ipaddr returns all addresses that match the scope
+  # the square brackets selects the only item in the list
+  # we split the IP address into a list contaiing 4 items (each item is an octet)
+  # we then select the 3rd item (4th in the list) and display it to the screen
+  - name: pop the number 50 on screen
+    debug:
+            msg: "{{ (myaddresses | ipaddr('10.0.0.0/8'))[0].split('.')[3] }}"
