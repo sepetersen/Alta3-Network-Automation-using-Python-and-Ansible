@@ -1,0 +1,2 @@
+[planet-express]
+bender	ansible_host=10.10.2.3 ansible_ssh_user=bender ansible_become_pass=alta3

@@ -1,0 +1,24 @@
+---
+ - name: Arista Config Saver
+   hosts: all
+   gather_facts: false
+   vars:
+           ansible_connection: network_cli
+           ansible_network_os: eos
+           ansible_become: yes
+           ansible_become_method: enable
+           ansible_user: admin
+           ansible_ssh_pass: alta3
+
+   tasks:
+           - name: Arista Fact Collection
+             eos_facts:
+                     gather_subset: all # IMPORTANT! Look at the Return values at the bottom of the eos_facts
+           - name: Create Arista config save directory
+             file: path=arista_config/ state=directory # Playbook will FAIL without this directory
+           - name: Arista config save
+             shell: "echo '{{ ansible_net_config }}' > arista_config/{{ ansible_net_hostname }}"
+           - name: Arist Archival Process
+             archive:
+                     path: arista_config/{{ ansible_net_hostname }} # location of our archived file
+                     remove: True # removes the original file

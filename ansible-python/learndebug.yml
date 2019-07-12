@@ -1,0 +1,23 @@
+---
+- name: How to print with debug
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+          vendorip: '192.168.22.55'
+
+  tasks:
+          - name: Print out to the screen
+            debug:
+                    msg: "The vendor IP is: {{ vendorip }}"
+                    # note that recall within the msg parameter requireds mustache-brackets
+
+          - name: Print just a variable
+            debug:
+                    var: vendorip
+                    # note that recall within the var parameter does not require mustache-brackets
+
+          - name: Print only with verbosity
+            debug:
+                    var: vendorip
+                    verbosity: 3

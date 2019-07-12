@@ -1,0 +1,5 @@
+[myswitches]
+sw1 ansible_host=10.2.190.125
+sw2 ansible_host=10.14.243.150
+; recently ansible_host was introduced to replace ansible_ssh_host
+; at this time, bath vars are legal and both do the same thing
