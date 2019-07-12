@@ -1,0 +1,15 @@
+---
+- name: Push a script and run it
+  hosts: localhost
+
+  tasks:
+          ## If you want your script to only ever execute once
+          - script: /home/student/mycode/ansible-python/pyhello02.py
+            args:
+                    ## execute in python3 and only run if the following files is MISSING
+                    executable: python3
+                    creates: /home/student/mycode/ansible-python/stopper.txt
+            register: results
+
+          - debug:
+                  msg: "{{ results }}" 

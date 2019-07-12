@@ -26,3 +26,11 @@
             tags:
                     - jsonwork
                     - astros
+
+          - name: Clean up that ISS data
+            debug:
+                    msg: "Let me format that witha  loop: {{ item }}"
+            loop: "{{ astros.people | map(attribute='name') | list }}"
+            tags:
+                    - jsonwork
+                    - astros
