@@ -1,0 +1,11 @@
+---
+- name: Using our new module
+  hosts: localhost
+
+  tasks:
+          - name: New module
+            my_new_test_module:
+                    name: who you gonna call 
+            register: results
+          - debug:
+                  var: results.message
